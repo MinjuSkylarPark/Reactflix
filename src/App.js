@@ -7,17 +7,20 @@ import SearchIcon from './search.svg';
 // e4231acb
 
 const API_URL = 'https://www.omdbapi.com?apikey=e4231acb'
-const movie={
-        "Title": "Italian Spiderman",
-        "Year": "2007",
-        "imdbID": "tt2705436",
-        "Type": "movie",
-        "Poster": "https://m.media-amazon.com/images/M/MV5BYjFhN2RjZTctMzA2Ni00NzE2LWJmYjMtNDAyYTllOTkyMmY3XkEyXkFqcGdeQXVyNTA0OTU0OTQ@._V1_SX300.jpg",
+// const movie={
+//         "Title": "Italian Spiderman",
+//         "Year": "2007",
+//         "imdbID": "tt2705436",
+//         "Type": "movie",
+//         "Poster": "https://m.media-amazon.com/images/M/MV5BYjFhN2RjZTctMzA2Ni00NzE2LWJmYjMtNDAyYTllOTkyMmY3XkEyXkFqcGdeQXVyNTA0OTU0OTQ@._V1_SX300.jpg",
 
-}
+// }
 const App=()=> {
   
+  //무비데이터가 변경될때마다 상태업데이트를하는 moviedata만듦
   const [movies, setMovies] = useState([]);
+  const[searchTerm,setSearchTerm] = useState('')
+
   const searchMovies = async(title) =>{
     const response = await fetch(`${API_URL}&s=${title}`)
     const data = await response.json();
@@ -26,20 +29,29 @@ const App=()=> {
     setMovies(data.Search)
   }
   useEffect(()=>{
-    searchMovies('spiderman')
+    searchMovies('love')
   },[]);
 
   return(
     <div className='app'>
         <h1>MovieLand</h1>
+
         <div className="search">
-            <input placeholder='search'
-              value="Spiderman"
-              onChange={()=>{}}/>
+
+            <input 
+              
+              placeholder='search for movies'
+              // value="Spiderman"
+              value={searchTerm}
+              // onChange={()=>{}}/>
+              // 1. setSearchTerm - useState을 씀으로써 검색창을 활성화 시켰다
+              onChange={(e)=>setSearchTerm(e.target.value)}/>
+        
+              {/* 2. 이미지를 리렌더링 함으로써 검색값에의해 검색결과가 재조회되게끔 할 수 있다 */}
               <img
                 src={SearchIcon}
                 alt="search"
-                onClick={()=>{}}
+                onClick={()=>searchMovies(searchTerm)}
               />
         </div>
 
@@ -54,7 +66,7 @@ const App=()=> {
             <Moviecard movie={movie}/>
           ))}
         </div>
-        // and if that is not the case 영화데이터가 없습니다 화면 송출
+        // 영화데이터가없을 경우 no movie found 
         ) : (
           <div className="empty">
             <h2>No Movies found</h2>

@@ -1,7 +1,7 @@
 import React from "react";
 //movie1 대신 props를 넣어도 되나(하단)
 //props로 하나하나 전달하는 대신(props.movie1Title / props.moviePoster)
-//이런식으로 쭉쭉나아가야하니
+//movie다음 전달하고자하는 데이터이름을 옆에붙여준다
 
 const MovieCard = ({ movie }) => {
   return (
@@ -10,7 +10,6 @@ const MovieCard = ({ movie }) => {
         <div>
           <p>{movie.Year}</p>
         </div>
-
         <div>
           {/* N/A 는 영화이미지가 없을 때 (API내규칙)*/}
           {/* poster 렌더링전에 movie1반드시붙여주기 */}
@@ -20,12 +19,12 @@ const MovieCard = ({ movie }) => {
             src={
               movie.Poster !== "N/A"
                 ? movie.Poster
-                : "https://via.placeholder.com/400"
+                : // 이미지가 없을경우 하단의 주소창의 empty이미지를 보여준다
+                  "https://via.placeholder.com/400"
             }
             alt={movie.Title}
           />
         </div>
-
         <div>
           <span>{movie.Type}</span>
           <h3>{movie.Title}</h3>
